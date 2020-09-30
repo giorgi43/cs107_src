@@ -30,7 +30,7 @@ static int* findNode(sortedset *set, const void *elem) {
 		comp = set->cmp(elem, current);
 		if (comp == 0) break;
 		// decide where to go - (left or right)
-		root = (int*) ((char*)(current + set->elemSize)); // left one
+		root = (int*) ((char*) current + set->elemSize); // left one
 		if (comp > 0) root++; // if elem was bigger go to right
 	}
 	return root;
@@ -50,14 +50,13 @@ bool SetAdd(sortedset *set, const void *elemPtr) {
 	if (*i != -1) return false; // already in set
 	if (set->logicalSize == set->allocatedSize) expand(set);
 	*i = set->logicalSize++;
-	void* newNode = (char*) ((set->root+1) + *i * NodeSize(set->elemSize));
+	void* newNode = (char*) (set->root+1) + *i * NodeSize(set->elemSize);
 	memcpy(newNode, elemPtr, set->elemSize);
 	
-	int* child = (int*) ((char*) newNode + set->elemSize);
-	child[0] = child[1] = -1;
+	i = (int*) ((char*) newNode + set->elemSize);
+	i[0] = i[1] = -1;
 	return true;
 }
-
 
 void *SetSearch(sortedset *set, const void *elemPtr) {
 	int* i = findNode(set, elemPtr);
