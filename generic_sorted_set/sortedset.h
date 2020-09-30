@@ -1,6 +1,8 @@
-#include <bool.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <assert.h>
 
-typedef struct {
+typedef struct sortedset {
 	int *root;
 	int logicalSize;
 	int allocatedSize;
