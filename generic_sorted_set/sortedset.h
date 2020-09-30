@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
+#include <string.h>
 
 typedef struct sortedset {
 	int *root;
