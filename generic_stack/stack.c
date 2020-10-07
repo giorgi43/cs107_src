@@ -16,8 +16,11 @@ void StackInit(Stack* s, size_t elem_size, void (*free_fn)(void*)) {
 }
 
 void StackDispose(Stack* s) {
-	for (size_t i = 0; i < s->log_len; i++) {
-		s->free_fn( (char*) s->elems + i*s->elem_size);
+	// if user provided free_fn function
+	if (s->free_fn != NULL) {
+		for (size_t i = 0; i < s->log_len; i++) {
+			s->free_fn( (char*) s->elems + i*s->elem_size);
+		}
 	}
 	free(s->elems);
 }
@@ -42,7 +45,8 @@ void StackPop(Stack* s, void* elem) {
 		fprintf(stderr, "Can not pop. Stack is empty\n");
 		return;
 	}
-	void* top_ptr = (char*) s->elems + s->log_len-1 * s->elem_size;
+	s->log_len--;
+	void* top_ptr = (char*) s->elems + s->log_len * s->elem_size;
 	memcpy(elem, top_ptr, s->elem_size);
 }
 
