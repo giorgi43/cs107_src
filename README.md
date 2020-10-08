@@ -1,2 +1,2 @@
 # cs107_src
-freeuni cs107 seminar/lecture codes for practice
+freeuni cs107 seminar/lecture practice codes and assignments.
