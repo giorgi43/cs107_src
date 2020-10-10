@@ -77,7 +77,7 @@ bool imdb::getCredits(const string& player, vector<film>& films) const {
         return false;
     }
     // actor found in database. now filling vector
-	const void* actor_record = (char*) this->actorFile + *offset;
+    const void* actor_record = (char*) this->actorFile + *offset;
     int name_len = player.length() + 1; // including '\0'
     int padding = name_len + (name_len%2) + sizeof(short);
     while (padding % 4 != 0) {
@@ -107,7 +107,7 @@ bool imdb::getCast(const film& movie, vector<string>& players) const {
         return false;
     }
     // movie found in database
-	const void* movie_record = (char*) this->movieFile + *offset;
+    const void* movie_record = (char*) this->movieFile + *offset;
     int name_len = movie.title.length() + 1; // including '\0'
     int padding = name_len + 1; // including one byte for year delta
     while (padding%2 != 0) {

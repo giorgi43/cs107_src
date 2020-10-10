@@ -47,36 +47,36 @@ static string promptForActor(const string& prompt, const imdb& db)
  *			 cast of the movie or movie list of actor or actress
  */
 static void generateShortestPath(const string& source, const string& target, const imdb& db) {
-	list<path> partialPaths; // used as queue
-	set<string> previouslySeenActors;
+    list<path> partialPaths; // used as queue
+    set<string> previouslySeenActors;
     set<film> previouslySeenFilms;
-
-	path firstPath(source);
-	partialPaths.push_back(firstPath);
-	while (!partialPaths.empty() && partialPaths.front().getLength() <= 5) {
-		auto frontPath = partialPaths.front();
-		partialPaths.pop_front();
-		vector<film> movies;
-		db.getCredits(frontPath.getLastPlayer(), movies);
-		for (const auto& movie : movies) {
-			if (previouslySeenFilms.find(movie) != previouslySeenFilms.end()) continue;
-			previouslySeenFilms.insert(movie);
-			vector<string> cast;
-			db.getCast(movie, cast);
-			for (const auto& player : cast) {
-				if (previouslySeenActors.find(player) != previouslySeenActors.end()) continue;
-				previouslySeenActors.insert(player);
-				path cpath = frontPath;
-				cpath.addConnection(movie, player);
-				if (player == target) {
-					cout << cpath;
-					return;
-				}
-				partialPaths.push_back(cpath);
-			}
-		}
-	}
-	cout << "No path between those two people could be found.\n";
+ 
+    path firstPath(source);
+    partialPaths.push_back(firstPath);
+    while (!partialPaths.empty() && partialPaths.front().getLength() <= 5) {
+    auto frontPath = partialPaths.front();
+        partialPaths.pop_front();
+        vector<film> movies;
+        db.getCredits(frontPath.getLastPlayer(), movies);
+        for (const auto& movie : movies) {
+            if (previouslySeenFilms.find(movie) != previouslySeenFilms.end()) continue;
+            previouslySeenFilms.insert(movie);
+            vector<string> cast;
+            db.getCast(movie, cast);
+            for (const auto& player : cast) {
+                if (previouslySeenActors.find(player) != previouslySeenActors.end()) continue;
+                previouslySeenActors.insert(player);
+                path cpath = frontPath;
+                cpath.addConnection(movie, player);
+                if (player == target) {
+                    cout << cpath;
+                    return;
+                }
+                partialPaths.push_back(cpath);
+            }
+        }
+    }
+    cout << "No path between those two people could be found.\n";
 }
 
 /**
@@ -95,26 +95,26 @@ static void generateShortestPath(const string& source, const string& target, con
  */
 
 int main(int argc, const char *argv[]) {
- 	imdb db(determinePathToData(argv[1])); // inlined in imdb-utils.h
-  	if (!db.good()) {
-    	cout << "Failed to properly initialize the imdb database." << endl;
-    	cout << "Please check to make sure the source files exist and that you have permission to read them." << endl;
-    	return 1;
-  	}
-  
-  	while (true) {
-    	string source = promptForActor("Actor or actress", db);
-    	if (source == "") break;
-    	string target = promptForActor("Another actor or actress", db);
-    	if (target == "") break;
-    	if (source == target) {
-      		cout << "Good one.  This is only interesting if you specify two different people." << endl;
-    	} else {
-      		generateShortestPath(source, target, db);
-    	}
-  	}
- 	
- 	cout << "Thanks for playing!" << endl;
-  	return 0;
+    imdb db(determinePathToData(argv[1])); // inlined in imdb-utils.h
+    if (!db.good()) {
+        cout << "Failed to properly initialize the imdb database." << endl;
+        cout << "Please check to make sure the source files exist and that you have permission to read them." << endl;
+        return 1;
+    }
+
+    while (true) {
+        string source = promptForActor("Actor or actress", db);
+        if (source == "") break;
+        string target = promptForActor("Another actor or actress", db);
+        if (target == "") break;
+        if (source == target) {
+            cout << "Good one.  This is only interesting if you specify two different people." << endl;
+        } else {
+            generateShortestPath(source, target, db);
+        }
+    }
+    
+    cout << "Thanks for playing!" << endl;
+    return 0;
 }
 
