@@ -43,7 +43,7 @@ int main() {
 	assert(arr != NULL);
 	long sum_for_check = init_array(arr);
 	
-	long sum;
+	long sum = 0;
 	// allocate memory for mutex and initialize mutex
 	pthread_mutex_t* lock = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(lock, NULL);
